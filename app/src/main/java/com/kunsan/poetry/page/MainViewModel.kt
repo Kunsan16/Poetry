@@ -9,9 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.*
 import com.kunsan.poetry.PoetryRepository
 import com.kunsan.poetry.data.PoetryResponse
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import java.io.IOException
 
 class MainViewModel(private val dataStore: DataStore<Preferences>) : ViewModel() {
@@ -23,6 +21,21 @@ class MainViewModel(private val dataStore: DataStore<Preferences>) : ViewModel()
 
     var token = MutableLiveData<String>()
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+
+    fun openDialog(){
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm(){
+        onDialogDismiss()
+    }
+
+    fun onDialogDismiss() {
+        _showDialog.value = false
+    }
 
     /**
      * 检查本地token是否存在
